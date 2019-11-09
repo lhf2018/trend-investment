@@ -1,0 +1,90 @@
+<template th:fragment="html(title)" xmlns:th="http://www.springframework.org/schema/rabbit">
+
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-datepicker/1.8.0/bootstrap-datepicker.min.css" rel="stylesheet">
+
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/vue/2.5.16/vue.min.js"></script>
+    <script src="js/chartjs/2.8.0/chart.min.js"></script>
+    <script src="js/axios/0.17.1/axios.min.js"></script>
+    <script src="js/bootstrap-datepicker/1.8.0/bootstrap-datepicker.min.js"></script>
+    <script src="js/bootstrap-datepicker/1.8.0/bootstrap-datepicker.zh-CN.min.js"></script>
+
+    <script>
+        function formatMoney(num){
+            num = new String(num);
+            num = num.toString().replace(/\$|\,/g,'');
+            if(isNaN(num))
+                num = "0";
+            sign = (num == (num = Math.abs(num)));
+            num = Math.floor(num*100+0.50000000001);
+            cents = num%100;
+            num = Math.floor(num/100).toString();
+            if(cents<10)
+                cents = "0" + cents;
+            for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+                num = num.substring(0,num.length-(4*i+3))+','+
+                    num.substring(num.length-(4*i+3));
+            return (((sign)?'':'-') + num + '.' + cents);
+        }
+
+        function formatNumber(number, decimals, dec_point, thousands_sep) {
+            /*
+            * 参数说明：
+            * number：要格式化的数字
+            * decimals：保留几位小数
+            * dec_point：小数点符号
+            * thousands_sep：千分位符号
+            * */
+            number = (number + '').replace(/[^0-9+-Ee.]/g, '');
+            var n = !isFinite(+number) ? 0 : +number,
+                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                s = '',
+                toFixedFix = function (n, prec) {
+                    var k = Math.pow(10, prec);
+                    return '' + Math.ceil(n * k) / k;
+                };
+
+            s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+            var re = /(-?\d+)(\d{3})/;
+            while (re.test(s[0])) {
+                s[0] = s[0].replace(re, "$1" + sep + "$2");
+            }
+
+            if ((s[1] || '').length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1).join('0');
+            }
+            return s.join(dec);
+        }
+
+        Vue.filter("formatMoneyFilter", function(value){
+            return formatMoney(value);
+        });
+
+        Vue.filter("formatNumberFilter", function(value,decimal){
+            if(decimal==null)
+                decimal = 0;
+
+            return formatNumber(value,decimal, ".",",");
+        });
+
+        Vue.filter('formatDateFilter', function (value, formatString) {
+            if(null==value)
+                return "";
+            formatString = formatString || 'YYYY-MM-DD';
+            return moment(value).format(formatString);
+        });
+
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title th:text="${title}" ></title>
+</template>
