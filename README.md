@@ -18,22 +18,23 @@
 * 启动 TrendTradingBackTestServiceApplication
 * 启动 TrendTradingBackTestViewApplication
 * 启动 IndexZuulServiceApplication
+* 访问http://127.0.0.1:8031/api-view/
 
 ##### 微服务端口
 
-微服务 |  端口  
--|-
-eureka-server | 8761 
-third-part-index-data-project | 8090 
-index-gather-store-service | 8001 
-index-codes-service | 8011,8012,8013 
-index-data-service | 8021,8022,8023 
-index-zuul-service | 8031 
-trend-trading-backtest-view | 8041,8042,8043 
-trend-trading-backtest-service | 8051,8052,8053 
-index-config-server | 8060 
-index-hystrix-dashboard | 8070 
-index-turbine | 8080 
+微服务 | 项目名 |  端口  
+-|-|-
+注册中心|eureka-server | 8761 
+第三方数据中心|third-part-index-data-project | 8090 
+数据采集|index-gather-store-service | 8001 
+股票代号服务|index-codes-service | 8011,8012,8013 
+数据服务|index-data-service | 8021,8022,8023 
+路由|index-zuul-service | 8031 
+模拟回测服务|trend-trading-backtest-view | 8041,8042,8043 
+模拟回测视图服务|trend-trading-backtest-service | 8051,8052,8053 
+配置服务|index-config-server | 8060 
+断路器监控|index-hystrix-dashboard | 8070 
+断路器聚合监控|index-turbine | 8080 
 
 ##### 第三方工具端口
 
